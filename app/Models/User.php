@@ -12,12 +12,15 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'nom',        // Ajouté
-        'prenom',     // Ajouté
+        'nom',
+        'prenom',
         'email',
         'password',
-        'telephone',  // Ajouté
+        'telephone',
         'role',
+        'date_naissance',
+        'sexe',
+        'adresse',
     ];
 
     protected $hidden = [
@@ -30,6 +33,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_naissance' => 'date',
         ];
     }
 
@@ -41,5 +45,10 @@ class User extends Authenticatable
     public function medecin()
     {
         return $this->hasOne(Medecin::class);
+    }
+
+    public function pharmacie()
+    {
+        return $this->hasOne(Pharmacie::class);
     }
 }

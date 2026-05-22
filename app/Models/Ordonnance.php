@@ -3,26 +3,35 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ordonnance extends Model
 {
     protected $fillable = [
-        'patient_id',
         'medecin_id',
-        'medicaments',
-        'instructions',
+        'patient_id',
+        'pharmacie_id',
+        'contenu',
         'statut',
-        'date_prescription',
-        'date_expiration',
+        'motif_refus',
     ];
 
-    public function patient()
+    protected $casts = [
+        'contenu' => 'array',
+    ];
+
+    public function medecin(): BelongsTo
+    {
+        return $this->belongsTo(Medecin::class);
+    }
+
+    public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
     }
 
-    public function medecin()
+    public function pharmacie(): BelongsTo
     {
-        return $this->belongsTo(Medecin::class);
+        return $this->belongsTo(Pharmacie::class);
     }
 }

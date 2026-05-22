@@ -12,9 +12,19 @@ class PasswordResetController extends Controller
 {
     public function sendCode(Request $request)
     {
+        // 1. On trim l'email pour virer les espaces avant/après
+        $request->merge(['email' => trim(strtolower($request->email))]);
+        
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ]);
+
+        // 2. On vérifie manuellement au lieu de `exists:users,email` qui bug parfois
+        $user = User::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return response()->json(['message' => 'Email introuvable.'], 404);
+        }
 
         $code = rand(100000, 999999);
 
@@ -30,6 +40,8 @@ class PasswordResetController extends Controller
 
     public function verifyCode(Request $request)
     {
+        $request->merge(['email' => trim(strtolower($request->email))]);
+        
         $request->validate([
             'email' => 'required|email',
             'code'  => 'required',
@@ -46,10 +58,12 @@ class PasswordResetController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $request->merge(['email' => trim(strtolower($request->email))]);
+        
         $request->validate([
-            'email'    => 'required|email|exists:users,email',
+            'email'    => 'required|email',
             'code'     => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         $cached = Cache::get('reset_code_' . $request->email);
@@ -59,6 +73,11 @@ class PasswordResetController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return response()->json(['message' => 'Email introuvable.'], 404);
+        }
+
         $user->update(['password' => Hash::make($request->password)]);
 
         Cache::forget('reset_code_' . $request->email);

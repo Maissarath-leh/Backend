@@ -6,19 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->dropColumn(['date_naissance', 'sexe', 'adresse']);
+            //
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->date('date_naissance')->after('medecin_id');
-            $table->enum('sexe', ['Homme', 'Femme'])->after('date_naissance');
-            $table->string('adresse')->nullable()->after('sexe');
+            //
         });
     }
 };
