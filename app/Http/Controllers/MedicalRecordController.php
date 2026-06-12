@@ -17,6 +17,14 @@ class MedicalRecordController extends Controller
         $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
             'medecin_id' => 'required|exists:medecins,id',
+            // Constantes vitales
+            'tension' => 'nullable|string',
+            'pouls' => 'nullable|string',
+            'poids' => 'nullable|string',
+            'temperature' => 'nullable|string',
+            'glycemie' => 'nullable|string',
+            'spo2' => 'nullable|string',
+            // Infos médicales
             'blood_type' => 'nullable|string',
             'allergies' => 'nullable|string',
             'antecedents' => 'nullable|string',
@@ -25,6 +33,8 @@ class MedicalRecordController extends Controller
             'prescriptions' => 'nullable|string',
             'hospitalizations' => 'nullable|string',
             'notes' => 'nullable|string',
+            // Autres
+            'next_appointment' => 'nullable|date',
         ]);
 
         return MedicalRecord::create($validated);
