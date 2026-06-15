@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrdonnanceController;
 use App\Http\Controllers\SimulateurController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ConsultationController;
 use App\Models\User;
 use App\Models\Medecin;
 use App\Models\Pharmacie;
@@ -105,6 +106,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/simulateur/generer', [SimulateurController::class, 'generer']);
 
+    // Consultations
+    // Consultations
+// Consultations
+Route::post('/consultations/demander', [ConsultationController::class, 'demander']);
+Route::post('/consultations/{id}/accepter', [ConsultationController::class, 'accepter']);   // ⬅️ PUT → POST
+Route::post('/consultations/{id}/rejeter', [ConsultationController::class, 'rejeter']);     // ⬅️ PUT → POST
+Route::put('/consultations/{id}/terminer', [ConsultationController::class, 'terminer']);
+Route::get('/consultations/medecin/{medecinId}/demandes', [ConsultationController::class, 'demandesEnAttente']);
+Route::get('/consultations/patient/{patientId}/actives', [ConsultationController::class, 'consultationsActives']);
     Route::prefix('admin')->group(function () {
         
         Route::get('/stats', function (Request $request) {

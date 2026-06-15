@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('mesures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->bigInteger('patient_id')->unsigned()->nullable();
             $table->dateTime('date_heure');
             $table->float('frequence_cardiaque')->nullable();
             $table->float('temperature')->nullable();

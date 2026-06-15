@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('alertes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('mesure_id')->nullable()->constrained('mesures')->onDelete('set null');
+            $table->bigInteger('patient_id')->unsigned()->nullable();
+            $table->bigInteger('mesure_id')->unsigned()->nullable();
             $table->string('type');
             $table->string('niveau');
             $table->text('message');

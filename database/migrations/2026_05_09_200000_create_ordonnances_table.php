@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('ordonnances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('medecin_id')->constrained('medecins')->onDelete('cascade');
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('pharmacie_id')->nullable()->constrained('pharmacies')->onDelete('set null');
+            $table->bigInteger('medecin_id')->unsigned()->nullable();
+            $table->bigInteger('patient_id')->unsigned()->nullable();
+            $table->bigInteger('pharmacie_id')->unsigned()->nullable();
             $table->json('contenu');
             $table->enum('statut', ['en_attente', 'prise_en_charge', 'validee', 'refusee'])->default('en_attente');
             $table->text('motif_refus')->nullable();
